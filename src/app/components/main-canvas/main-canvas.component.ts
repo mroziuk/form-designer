@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
+import { FormEditorComponent } from './form-editor/form-editor.component';
 
 @Component({
   selector: 'app-main-canvas',
-  imports: [],
+  imports: [FormEditorComponent],
   template: `
-    <p class="p-4 bg-white rounded-lg h-[calc(100vh-150px)] overflow-y-auto border-gray-200 shadow-sm">
-      main-canvas works!
-    </p>
-  `,
-  styles: ``
-})
-export class MainCanvasComponent {
+    <div
+      class="p-4 bg-white rounded-lg h-[calc(100vh-150px)] overflow-y-auto border-gray-200 shadow-sm"
+    >
+      <div class="pb-4 border-b border-gray-200 ">
+        <h3 class="text-xl font-medium">Form Canvas</h3>
+      </div>
 
-}
+      <app-form-editor />
+    </div>
+  `,
+  styles: ``,
+})
+export class MainCanvasComponent {}

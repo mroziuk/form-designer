@@ -13,3 +13,7 @@ body {
   border: 2px solid lightgray !important;
   background-color: lightgray;
 }
+.mdc-notched-outline__notch
+{
+  border-right: none;
+}

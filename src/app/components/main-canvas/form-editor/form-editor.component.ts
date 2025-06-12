@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { FormService } from '../../../services/form.service';
 import { FieldTypeDefinition, FormField } from '../../../models/field';
-
+import { FormFieldComponent } from '../form-field/form-field.component';
 @Component({
   selector: 'app-form-editor',
-  imports: [DragDropModule],
+  imports: [DragDropModule, FormFieldComponent],
   template: `
     <div class="p-4">
       @for (row of formService.rows(); track row.id) {
@@ -18,7 +18,8 @@ import { FieldTypeDefinition, FormField } from '../../../models/field';
         <div>Row</div>
         <div class="flex gap-4 flex-wrap">
           @for (field of row.fields; track field.id) {
-          <div class="flex-1">{{ field.label }}</div>
+          <app-form-field class="flex-1" [field]="field" />
+
           }
         </div>
       </div>
@@ -31,7 +32,7 @@ export class FormEditorComponent {
   formService = inject(FormService);
 
   onDropInRow(event: CdkDragDrop<string>, rowId: string) {
-    console.log(event.previousContainer.data);
+    console.log(event);
     if (event.previousContainer.data === 'field-selector') {
       const fieldType = event.item.data as FieldTypeDefinition;
       const newField: FormField = {

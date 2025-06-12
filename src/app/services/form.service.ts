@@ -12,27 +12,36 @@ export class FormService {
     this._rows.set([{ id: crypto.randomUUID(), fields: [] }]);
   }
 
-  addField(field: FormField, rowId: string, index?: number){
+  addField(field: FormField, rowId: string, index?: number) {
     const rows = this._rows();
-    const newRows = rows.map(row => {
-      if(row.id === rowId){
+    const newRows = rows.map((row) => {
+      if (row.id === rowId) {
         /**
          * jak chcemy zmienić wartość w signal, w takim Array
          * to nie podstawiamy do signal tego signala, tylko jego immutable copy.
-         * Musimy tak zrobić, bo angular pilnuje referencji do obiektów 
+         * Musimy tak zrobić, bo angular pilnuje referencji do obiektów
          * i jak zobaczy że podstawiamy ten sam obiekt to może nie zaktualizować ui
          */
         const updatedFields = [...row.fields];
-        if(index !== undefined){
-          updatedFields.splice(index,0,field);
-        }
-        else{
+        if (index !== undefined) {
+          updatedFields.splice(index, 0, field);
+        } else {
           updatedFields.push(field);
         }
-        return {...row, fields: updatedFields}
+        return { ...row, fields: updatedFields };
       }
       return row;
-    })
+    });
+    this._rows.set(newRows);
+  }
+
+  deleteField(fieldId: string) {
+    const rows = this._rows();
+    const newRows = rows.map((row) => ({
+      ...row,
+      fields: row.fields.filter((f) => f.id !== fieldId),
+    }));
+
     this._rows.set(newRows);
   }
 }

@@ -1,10 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormEditorComponent } from './form-editor/form-editor.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormPreviewComponent } from './form-preview/form-preview.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { FormService } from '../../services/form.service';
 @Component({
   selector: 'app-main-canvas',
-  imports: [FormEditorComponent, MatButtonToggleModule, FormPreviewComponent],
+  imports: [
+    FormEditorComponent,
+    MatButtonToggleModule,
+    FormPreviewComponent,
+    MatButtonModule,
+    MatIcon,
+  ],
   template: `
     <div
       class="p-4 bg-white rounded-lg h-[calc(100vh-150px)] overflow-y-auto border-gray-200 shadow-sm"
@@ -18,6 +27,13 @@ import { FormPreviewComponent } from './form-preview/form-preview.component';
           <mat-button-toggle value="editor">Editor</mat-button-toggle>
           <mat-button-toggle value="preview">Preview</mat-button-toggle>
         </mat-button-toggle-group>
+        @if (activeTab() === 'editor') {
+        <div class="flex-1"></div>
+        <button mat-flat-button (click)="formService.addRow()">
+          Add Row
+          <mat-icon>add_circle</mat-icon>
+        </button>
+        }
       </div>
       @if (activeTab() === 'editor') {
 
@@ -29,4 +45,5 @@ import { FormPreviewComponent } from './form-preview/form-preview.component';
 })
 export class MainCanvasComponent {
   activeTab = signal<'preview' | 'editor'>('editor');
+  formService = inject(FormService);
 }

@@ -8,7 +8,9 @@ import { FormField } from '../../../models/field';
   template: `
     <mat-form-field class="w-full" appearance="outline" >
       <mat-label>{{ field().label }}</mat-label>
-      <input matInput [type]="field().inputType || 'text'" [required]="field().required"/>
+      <input matInput [type]="field().inputType || 'text'"
+       [required]="field().required"
+       [placeholder]="field().placeholder ?? ''"/>
     </mat-form-field>
   `,
   styles: ``,

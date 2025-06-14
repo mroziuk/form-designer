@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { FormRow } from '../models/form';
 import { FormField } from '../models/field';
 
@@ -8,6 +8,13 @@ import { FormField } from '../models/field';
 export class FormService {
   private _rows = signal<FormRow[]>([]);
   public readonly rows = this._rows.asReadonly();
+  private _selectedFieldId = signal<string | null>(null);
+
+  public readonly selectedField = computed(() =>
+    this._rows()
+      .flatMap((row) => row.fields)
+      .find((f) => f.id === this._selectedFieldId())
+  );
   constructor() {
     this._rows.set([{ id: crypto.randomUUID(), fields: [] }]);
   }
@@ -34,7 +41,6 @@ export class FormService {
     });
     this._rows.set(newRows);
   }
-
   deleteField(fieldId: string) {
     const rows = this._rows();
     const newRows = rows.map((row) => ({
@@ -70,7 +76,6 @@ export class FormService {
     let fieldToMove: FormField | undefined;
     let sourceRowIndex = -1;
     let sourceFieldIndex = -1;
-    console.log(fieldId,sourceRowId,targetRowId,targetIndex)
     rows.forEach((row, rowIndex) => {
       if (row.id === sourceRowId) {
         sourceRowIndex = rowIndex;
@@ -97,5 +102,16 @@ export class FormService {
     }
 
     this._rows.set(newRows);
+  }
+  setSelectedField(fieldId: string) {
+    this._selectedFieldId.set(fieldId);
+  }
+  updateField(fieldId: string, data: Partial<FormField>){
+    const rows = this._rows();
+    const newRows = rows.map(row => ({
+      ...row,
+      fields: row.fields.map((f) => f.id === fieldId ? {...f, ...data} : f)
+  }))
+  this._rows.set(newRows);
   }
 }

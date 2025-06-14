@@ -16,9 +16,10 @@ export interface FormField {
   required: boolean;
   inputType?: string;
   placeholder?: string;
+  options?: OptionItem[];
 }
 export interface FieldSettingsDefinition {
-  type: 'text' | 'checkbox' | 'select';
+  type: 'text' | 'checkbox' | 'select' | 'dynamic-options';
   key: string;
   label: string;
   options?: OptionItem[];

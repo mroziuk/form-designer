@@ -39,6 +39,7 @@ export class FormService {
       }
       return row;
     });
+    console.log(newRows);
     this._rows.set(newRows);
   }
   deleteField(fieldId: string) {
